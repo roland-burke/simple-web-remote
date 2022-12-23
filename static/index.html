@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<head>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	<title>Remote</title>
+</head>
+
+<body>
+	<div style="display: flex; flex-direction: column; align-items: center;">
+		<div>
+			<button class="button" onclick="sendRequest('volumeup')"><i class="material-icons">volume_up</i></button>
+
+		</div>
+		<div>
+			<button class="button" onclick="sendRequest('previous')"><i
+				class="material-icons md-48">skip_previous</i></button>
+			<button class="button" onclick="sendRequest('playpause')">
+				<span class="material-symbols-outlined">
+					play_pause
+				</span>
+			</button>
+			<button class="button" onclick="sendRequest('next')"><i
+				class="material-icons md-48">skip_next</i></button>
+		</div>
+		<div>
+			<button class="button" onclick="sendRequest('volumedown')"><i
+					class="material-icons md-48">volume_down</i></button>
+		</div>
+		<button class="button" onclick="sendRequest('mute')"><i
+			class="material-icons md-48">volume_mute</i></button>
+	</div>
+
+	<script>
+		function sendRequest(data) {
+			//let url = "http://127.0.0.1:8081/status"
+			let url = "http://" + window.location.host
+
+			fetch(url, {
+				method: "POST",
+				headers: { 'Content-Type': 'application/json', 'Content-Length': data.length },
+				dataType: "json",
+				body: JSON.stringify({ "operation": data })
+			}).then().catch(err => { throw err });
+
+		}
+	</script>
+
+</body>
+
+<style>
+	.button {
+		margin: 6px;
+		min-width: 80px;
+		min-height: 80px;
+	}
+
+	.material-symbols-outlined {
+		font-variation-settings:
+			'FILL' 0,
+			'wght' 400,
+			'GRAD' 0,
+			'opsz' 48
+	}
+</style>
+
+</html>
