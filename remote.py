@@ -39,7 +39,7 @@ class MyRemoteServer(BaseHTTPRequestHandler):
 
 	def do_GET(self):
 		self._set_headers()
-		f = open("static/index.html", "r")
+		f = open("/home/roland/coding/web-remote/static/index.html", "r")
 		self.wfile.write(f.read().encode())
 
 	def do_HEAD(self):
