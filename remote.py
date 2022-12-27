@@ -1,5 +1,6 @@
 #!/bin/env python
 import os
+import socket
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from socketserver import ThreadingMixIn
 
@@ -8,7 +9,7 @@ from pynput.keyboard import Controller, Key
 
 
 class MyRemoteServer(BaseHTTPRequestHandler):
-    WORK_DIR = 'web-remote/static'
+    STATIC_DIR = 'static'
     controller = Controller()
 
     def playpause(self):
@@ -42,10 +43,9 @@ class MyRemoteServer(BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path.endswith('.svg'):
-            self.WORK_DIR = self.WORK_DIR + '/icons'
+            self.STATIC_DIR = self.STATIC_DIR + '/icons'
 
-        root = os.path.join(os.path.dirname(os.path.dirname(
-            os.path.abspath(__file__))), self.WORK_DIR)
+        root = os.path.join(os.path.dirname(os.path.abspath(__file__)), self.STATIC_DIR)
         if self.path == '/':
             filename = root + '/index.html'
         else:
@@ -97,6 +97,9 @@ def run(server_class=ThreadingSimpleServer, handler_class=MyRemoteServer, port=8
     server_address = ("0.0.0.0", port)
     httpd = server_class(server_address, handler_class)
     print('Starting server at port:', port)
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    print("Open 'http://" + local_ip + ":" + str(port) + "' in your browser, to access the remote")
     httpd.serve_forever()
 
 
