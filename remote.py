@@ -1,6 +1,7 @@
 #!/bin/env python
 import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from socketserver import ThreadingMixIn
 
 import simplejson
 from pynput.keyboard import Controller, Key
@@ -89,8 +90,10 @@ class MyRemoteServer(BaseHTTPRequestHandler):
         self.end_headers()
         return
 
+class ThreadingSimpleServer(ThreadingMixIn, HTTPServer):
+    pass
 
-def run(server_class=HTTPServer, handler_class=MyRemoteServer, port=8080):
+def run(server_class=ThreadingSimpleServer, handler_class=MyRemoteServer, port=8080):
     server_address = ("0.0.0.0", port)
     httpd = server_class(server_address, handler_class)
     print('Starting server at port:', port)
