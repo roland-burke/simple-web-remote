@@ -3,40 +3,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <head>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet"
-		href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 	<title>Remote</title>
 </head>
 
 <body>
-	<div style="display: flex; flex-direction: column; align-items: center;">
-		<div>
-			<button class="button" onclick="sendRequest('volumeup')"><i class="material-icons">volume_up</i></button>
-
+	<div style="display: flex; flex-direction: column; align-items: center; justify-content: space-around; ">
+		<div class="button-container">
+			<button class="button pushable" onclick="sendRequest('volumeup')"><object class="my-svg-icon" width="60" height="60"
+					data="volumeup.svg" type="image/svg+xml"></object></button>
 		</div>
-		<div>
-			<button class="button" onclick="sendRequest('previous')"><i
-				class="material-icons md-48">skip_previous</i></button>
-			<button class="button" onclick="sendRequest('playpause')">
-				<span class="material-symbols-outlined">
-					play_pause
-				</span>
+		<div class="button-container">
+			<button class="button pushable" onclick="sendRequest('previous')"><object class="my-svg-icon" width="60" height="60"
+					data="prev.svg" type="image/svg+xml"></object></button>
+			<button class="button pushable" onclick="sendRequest('playpause')">
+				<object class="my-svg-icon" width="60" height="60" data="playpause.svg" type="image/svg+xml"></object>
 			</button>
-			<button class="button" onclick="sendRequest('next')"><i
-				class="material-icons md-48">skip_next</i></button>
+			<button class="button pushable" onclick="sendRequest('next')"><object class="my-svg-icon" width="60" height="60"
+					data="next.svg" type="image/svg+xml"></object></button>
 		</div>
-		<div>
-			<button class="button" onclick="sendRequest('volumedown')"><i
-					class="material-icons md-48">volume_down</i></button>
+		<div class="button-container">
+			<button style="opacity: 0;" class="button"></button>
+			<button class="button pushable" onclick="sendRequest('volumedown')"><object class="my-svg-icon" width="60"
+					height="60" data="volumedown.svg" type="image/svg+xml"></object></button>
+			<button class="button pushable" onclick="sendRequest('mute')"><object class="my-svg-icon" width="60" height="60"
+					data="mute.svg" type="image/svg+xml"></object></button>
 		</div>
-		<button class="button" onclick="sendRequest('mute')"><i
-			class="material-icons md-48">volume_mute</i></button>
 	</div>
+	<br>
+	<span id="err-field"></span>
 
 	<script>
 		function sendRequest(data) {
-			//let url = "http://127.0.0.1:8081/status"
 			let url = "http://" + window.location.host
 
 			fetch(url, {
@@ -44,7 +41,12 @@
 				headers: { 'Content-Type': 'application/json', 'Content-Length': data.length },
 				dataType: "json",
 				body: JSON.stringify({ "operation": data })
-			}).then().catch(err => { throw err });
+			}).then((res) => {
+				if (res.status < 200 || res.status > 299) {
+					document.getElementById("err-field").innerHTML = "Fehler: " + res.status + ": " + res.statusText
+
+				}
+			}).catch(err => { throw err });
 
 		}
 	</script>
@@ -52,18 +54,37 @@
 </body>
 
 <style>
-	.button {
-		margin: 6px;
-		min-width: 80px;
+	.my-svg-icon {
+		pointer-events: none;
+        border-radius: 12px;
+        background: rgb(123, 133, 251);
+        color: white;
+        transform: translateY(-6px);
+        min-width: 80px;
 		min-height: 80px;
 	}
 
-	.material-symbols-outlined {
-		font-variation-settings:
-			'FILL' 0,
-			'wght' 400,
-			'GRAD' 0,
-			'opsz' 48
+	.button-container {
+		display: flex;
+	}
+
+    .pushable {
+        border-radius: 12px;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        outline-offset: 4px;
+      }
+    
+      .pushable:active .my-svg-icon {
+        transform: translateY(-2px);
+      }
+
+	.button {
+        background-color: rgb(13, 49, 180);
+		margin: 8px;
+		min-width: 80px;
+		min-height: 80px;
 	}
 </style>
 
