@@ -43,7 +43,7 @@
 				body: JSON.stringify({ "operation": data })
 			}).then((res) => {
 				if (res.status < 200 || res.status > 299) {
-					document.getElementById("err-field").innerHTML = "Fehler: " + res.status + ": " + res.statusText
+					document.getElementById("err-field").innerHTML = "Error: " + res.status + ": " + res.statusText
 
 				}
 			}).catch(err => { throw err });
