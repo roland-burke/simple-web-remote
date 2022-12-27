@@ -1,4 +1,6 @@
 # Python web remote
+If you watch/listen to any multimedia on your computer, and you don't want to use the mouse/keyboard to control it, this is the solution!
+
 Usage: ./remote.py
 
 A port can be specified with: ./remote.py \<port\>
